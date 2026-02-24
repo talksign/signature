@@ -1,0 +1,12 @@
+{
+    "name": "talksign-signature-portal",
+    "version": "1.0.0",
+    "description": "Internal tool for TalkSign employees to generate verified email signatures.",
+    "main": "api/send.js",
+    "dependencies": {
+      "resend": "^3.2.0"
+    },
+    "engines": {
+      "node": "18.x"
+    }
+  }
