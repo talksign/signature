@@ -3,75 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalkSign | Signature Portal</title>
+    <title>TalkSign | Official Signature Portal</title>
     <style>
-        :root { --bg: #1a1a1a; --card: #ffffff; --accent: #007AFF; --error: #ff4d4d; }
-        body { font-family: 'Inter', system-ui, sans-serif; background-color: var(--bg); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: white; }
-        
-        /* Top Right Logo */
-        .header-logo { position: absolute; top: 30px; right: 30px; width: 120px; filter: brightness(0) invert(1); }
+        :root {
+            --bg: #1a1a1a;
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --accent: #007AFF;
+            --text-main: #ffffff;
+            --text-dim: #a1a1a1;
+            --error: #ff4d4d;
+        }
 
-        .container { background: var(--card); color: #000; padding: 40px; border-radius: 24px; width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; }
-        h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
-        p { color: #666; font-size: 14px; margin-bottom: 30px; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-        .input-group { text-align: left; margin-bottom: 15px; }
-        label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; color: #999; }
-        input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 12px; font-size: 15px; box-sizing: border-box; transition: 0.3s; }
-        input:focus { border-color: var(--accent); outline: none; }
-        
-        /* Domain Lock UI */
-        input.invalid { border-color: var(--error); background: #fff8f8; }
-        .error-hint { color: var(--error); font-size: 11px; margin-top: 5px; display: none; font-weight: 600; }
+        .form-wrapper {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
 
-        button { width: 100%; padding: 16px; background: #000; color: #fff; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        button:disabled { background: #ccc; cursor: not-allowed; }
-        button:hover:not(:disabled) { transform: translateY(-2px); background: #333; }
+        /* Logo integrated into the top of the form */
+        .brand-logo {
+            width: 140px;
+            margin-bottom: 40px;
+            filter: brightness(0) invert(1); /* Ensures logo is white */
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            color: var(--text-dim);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+        }
+
+        input.invalid {
+            border-color: var(--error);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: var(--text-main);
+            color: var(--bg);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            margin-top: 10px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            background: #444;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .error-hint {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
 
         #step-2, #step-3 { display: none; }
-        #preview-area { margin-top: 20px; border: 1px solid #eee; border-radius: 12px; padding: 15px; }
+
+        /* Signature Preview Styling */
+        .preview-container {
+            margin-top: 30px;
+            background: #fff; /* Signatures are usually viewed on white in emails */
+            padding: 20px;
+            border-radius: 12px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
 
-    <img src="talksign-logo.png" class="header-logo" alt="TalkSign">
+    <div class="form-wrapper">
+        <img src="talksign-logo.png" class="brand-logo" alt="TalkSign">
 
-    <div class="container">
         <div id="step-1">
             <h1>Create Signature</h1>
             <p>Access restricted to @talksign.co</p>
+            
             <div class="input-group">
                 <label>Full Name</label>
-                <input type="text" id="name" placeholder="John Doe">
+                <input type="text" id="name" placeholder="e.g. John Doe">
             </div>
+
             <div class="input-group">
                 <label>Job Title</label>
-                <input type="text" id="title" placeholder="Creative Director">
+                <input type="text" id="title" placeholder="e.g. Creative Director">
             </div>
+
             <div class="input-group">
                 <label>Official Email</label>
                 <input type="email" id="email" placeholder="name@talksign.co" oninput="checkDomain()">
-                <div id="err" class="error-hint">Domain must be @talksign.co</div>
+                <div id="err" class="error-hint">Please use your official @talksign.co email</div>
             </div>
-            <button id="send-btn" disabled onclick="handleRequest()">Get Verification Code</button>
+
+            <button id="send-btn" disabled onclick="handleRequest()">Request Code</button>
         </div>
 
         <div id="step-2">
-            <h1>Verify Email</h1>
-            <p>Enter the 6-digit code sent to your inbox.</p>
-            <input type="text" id="otp" placeholder="••••••" style="text-align:center; font-size: 24px; letter-spacing: 4px;">
+            <h1>Verify Identity</h1>
+            <p>Enter the code sent to your inbox.</p>
+            <input type="text" id="otp" placeholder="Code" style="text-align:center; font-size: 24px; letter-spacing: 8px;">
             <button onclick="handleVerify()">Verify & Generate</button>
         </div>
 
         <div id="step-3">
-            <h1>Pixel Perfect!</h1>
-            <p>Copy and paste this into Zoho settings.</p>
-            <div id="preview-area"></div>
-            <button onclick="copySig()" style="background: var(--accent);">Copy Signature</button>
+            <h1 style="color: var(--accent);">Ready!</h1>
+            <p>Your signature has been generated.</p>
+            <div id="preview-area" class="preview-container"></div>
+            <button onclick="copySig()" style="background: var(--accent); color: white;">Copy to Clipboard</button>
         </div>
     </div>
 
 <script>
+    // Logic remains same as previous version, but styled for the new UI
     let code; 
     function checkDomain() {
         const val = document.getElementById('email').value.toLowerCase();
@@ -80,6 +188,7 @@
         const isCorrect = val.endsWith('@talksign.co');
         
         btn.disabled = !isCorrect;
+        document.getElementById('email').classList.toggle('invalid', val.includes('@') && !isCorrect);
         err.style.display = (val.includes('@') && !isCorrect) ? 'block' : 'none';
     }
 
@@ -87,7 +196,11 @@
         code = Math.floor(100000 + Math.random() * 900000);
         const email = document.getElementById('email').value;
 
-        // Calling Vercel Serverless Function
+        // Visual feedback
+        const btn = document.getElementById('send-btn');
+        btn.innerText = "Sending...";
+        btn.disabled = true;
+
         await fetch('/api/send', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -103,7 +216,7 @@
             renderSignature();
             document.getElementById('step-2').style.display = 'none';
             document.getElementById('step-3').style.display = 'block';
-        } else { alert("Wrong code!"); }
+        } else { alert("Incorrect verification code."); }
     }
 
     function renderSignature() {
@@ -112,16 +225,16 @@
         const email = document.getElementById('email').value;
 
         document.getElementById('preview-area').innerHTML = `
-            <table id="final-sig" cellpadding="0" cellspacing="0" style="font-family: Arial; min-width: 350px;">
+            <table cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #000; min-width: 350px;">
                 <tr>
-                    <td style="padding-right: 15px; border-right: 1px solid #e5e5e5;">
+                    <td style="padding-right: 15px; border-right: 1px solid #e5e5e5; vertical-align: middle;">
                         <img src="talksign-logo.png" width="100">
                     </td>
-                    <td style="padding-left: 15px;">
-                        <div style="font-weight: bold; font-size: 16px;">${name}</div>
+                    <td style="padding-left: 15px; vertical-align: middle;">
+                        <div style="font-weight: bold; font-size: 17px; color: #000;">${name}</div>
                         <div style="color: #666; font-size: 13px; margin-bottom: 8px;">${title}</div>
-                        <div style="font-size: 12px;"><b>A:</b> Your Company Address here</div>
-                        <div style="font-size: 12px;"><b>E:</b> ${email}</div>
+                        <div style="font-size: 12px; color: #000;"><b>A:</b> Your Company Office Address</div>
+                        <div style="font-size: 12px; color: #000;"><b>E:</b> ${email}</div>
                         <div style="font-size: 12px; color: #007AFF;"><b>W:</b> talksign.co</div>
                     </td>
                 </tr>
@@ -134,7 +247,7 @@
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
         document.execCommand('copy');
-        alert("Copied! Now paste into Zoho.");
+        alert("Signature copied! You can now paste it into Zoho.");
     }
 </script>
 </body>
